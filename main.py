@@ -6,10 +6,25 @@ import time
 from datetime import date, datetime
 import random
 from random import choice
+from pydub import AudioSegment
+import webbrowser
 
 r = sr.Recognizer()
 
-def record(ask = False):
+
+# def speeding():
+#     in_path = 'answer.mp3'
+#     ex_path = 'speed.mp3'
+#     sound = AudioSegment.from_file(in_path)
+#     slower_sound = speed_swifter(sound, 1.3)
+#     slower_sound.export(ex_path, format="mp3")
+
+# def speed_swifter(sound, speed=1.0):
+#     sound_with_altered_frame_rate = sound._spawn(sound.raw_data, overrides={"frame_rate": int(sound.frame_rate * speed)})
+#     return sound_with_altered_frame_rate
+
+
+def record(ask=False):
     with sr.Microphone() as source:
         if ask:
             print(ask)
@@ -23,6 +38,7 @@ def record(ask = False):
             print("Asistan: Sistem çalışmıyor")
         return voice
 
+
 def response(voice):
     if "merhaba" in voice:
         speak("sana da merhaba genç")
@@ -33,6 +49,7 @@ def response(voice):
     if "görüşürüz" in voice:
         speak("görüşürüz canım")
         exit()
+
     if "hangi gündeyiz" in voice:
         today = time.strftime("%A")
         today.capitalize()
@@ -65,12 +82,22 @@ def response(voice):
         selection = random.choice(selection)
         speak(selection + clock)
 
+    if "google'da ara" in voice:
+        speak("Ne aramamı istersin?")
+        search = record()
+        url = "https://www.google.com/search?q={}".format(search)
+        webbrowser.get().open(url)
+        speak("{} içi Google'da bulabildiklerimi listeliyorum.".format(search))
+
 def speak(string):
     tts = gTTS(text=string, lang="tr", slow=False)
     file = "answer.mp3"
     tts.save(file)
+    # speeding()
     playsound(file)
     os.remove(file)
+    # os.remove("speed.mp3")
+
 
 # speak("Selam madenci")
 playsound("DING.mp3")
