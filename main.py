@@ -40,54 +40,55 @@ def record(ask=False):
 
 
 def response(voice):
-    if "merhaba" in voice:
-        speak("sana da merhaba genç")
-    if "selam" in voice:
-        speak("sana 2 kere selam olsun")
-    if "teşekkür ederim" in voice or "teşekkürler" in voice:
-        speak("rica ederim")
-    if "görüşürüz" in voice:
-        speak("görüşürüz canım")
-        exit()
+        if "merhaba" in voice:
+            speak("sana da merhaba genç")
+        if "selam" in voice:
+            speak("sana 2 kere selam olsun")
+        if "teşekkür ederim" in voice or "teşekkürler" in voice:
+            speak("rica ederim")
+        if "görüşürüz" in voice:
+            speak("görüşürüz canım")
+            exit()
 
-    if "hangi gündeyiz" in voice:
-        today = time.strftime("%A")
-        today.capitalize()
-        if today == "Monday":
-            today = "Pazartesi"
+        if "hangi gündeyiz" in voice:
+            today = time.strftime("%A")
+            today.capitalize()
+            if today == "Monday":
+                today = "Pazartesi"
 
-        elif today == "Tuesday":
-            today = "Salı"
+            elif today == "Tuesday":
+                today = "Salı"
 
-        elif today == "Wednesday":
-            today = "Çarşamba"
+            elif today == "Wednesday":
+                today = "Çarşamba"
 
-        elif today == "Thursday":
-            today = "Perşembe"
+            elif today == "Thursday":
+                today = "Perşembe"
 
-        elif today == "Friday":
-            today = "Cuma"
+            elif today == "Friday":
+                today = "Cuma"
 
-        elif today == "Saturday":
-            today = "Cumartesi"
+            elif today == "Saturday":
+                today = "Cumartesi"
 
-        elif today == "Sunday":
-            today = "Pazar"
+            elif today == "Sunday":
+                today = "Pazar"
 
-        speak(today)
+            speak(today)
 
-    if "saat kaç" in voice:
-        selection = ["Saat şu an: ", "Hemen bakıyorum: "]
-        clock = datetime.now().strftime("%H:%M")
-        selection = random.choice(selection)
-        speak(selection + clock)
+        if "saat kaç" in voice:
+            selection = ["Saat şu an: ", "Hemen bakıyorum: "]
+            clock = datetime.now().strftime("%H:%M")
+            selection = random.choice(selection)
+            speak(selection + clock)
 
-    if "google'da ara" in voice:
-        speak("Ne aramamı istersin?")
-        search = record()
-        url = "https://www.google.com/search?q={}".format(search)
-        webbrowser.get().open(url)
-        speak("{} içi Google'da bulabildiklerimi listeliyorum.".format(search))
+        if "google'da ara" in voice:
+            speak("Ne aramamı istersin?")
+            search = record()
+            url = "https://www.google.com/search?q={}".format(search)
+            webbrowser.get().open(url)
+            speak("{} içi Google'da bulabildiklerimi listeliyorum.".format(search))
+
 
 def speak(string):
     tts = gTTS(text=string, lang="tr", slow=False)
@@ -98,13 +99,22 @@ def speak(string):
     os.remove(file)
     # os.remove("speed.mp3")
 
+def test(wake):
+    if "charlie" in wake:
+        playsound("DING.mp3")
+        wake = record()
+        if wake != '':
+            voice = wake.lower()
+            print(wake.capitalize())
+            response(voice)
+
 
 # speak("Selam madenci")
 playsound("DING.mp3")
 
 while True:
-    voice = record()
-    if voice != '':
-        voice = voice.lower()
-        print(voice.capitalize())
-        response(voice)
+    wake = record()
+    if wake != '':
+        wake = wake.lower()
+        print(wake.capitalize())
+        test(wake)
