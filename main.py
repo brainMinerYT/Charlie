@@ -1,3 +1,4 @@
+from cProfile import run
 from playsound import playsound
 from gtts import gTTS
 import speech_recognition as sr
@@ -40,55 +41,67 @@ def record(ask=False):
 
 
 def response(voice):
-        if "merhaba" in voice:
-            speak("sana da merhaba genç")
-        if "selam" in voice:
-            speak("sana 2 kere selam olsun")
-        if "teşekkür ederim" in voice or "teşekkürler" in voice:
-            speak("rica ederim")
-        if "görüşürüz" in voice:
-            speak("görüşürüz canım")
-            exit()
+    if "merhaba" in voice:
+        speak("sana da merhaba genç")
+    if "selam" in voice:
+        speak("sana 2 kere selam olsun")
+    if "teşekkür ederim" in voice or "teşekkürler" in voice:
+        speak("rica ederim")
+    if "görüşürüz" in voice:
+        speak("görüşürüz canım")
+        exit()
 
-        if "hangi gündeyiz" in voice:
-            today = time.strftime("%A")
-            today.capitalize()
-            if today == "Monday":
-                today = "Pazartesi"
+    if "hangi gündeyiz" in voice:
+        today = time.strftime("%A")
+        today.capitalize()
+        if today == "Monday":
+            today = "Pazartesi"
 
-            elif today == "Tuesday":
-                today = "Salı"
+        elif today == "Tuesday":
+            today = "Salı"
 
-            elif today == "Wednesday":
-                today = "Çarşamba"
+        elif today == "Wednesday":
+            today = "Çarşamba"
 
-            elif today == "Thursday":
-                today = "Perşembe"
+        elif today == "Thursday":
+            today = "Perşembe"
 
-            elif today == "Friday":
-                today = "Cuma"
+        elif today == "Friday":
+            today = "Cuma"
 
-            elif today == "Saturday":
-                today = "Cumartesi"
+        elif today == "Saturday":
+            today = "Cumartesi"
 
-            elif today == "Sunday":
-                today = "Pazar"
+        elif today == "Sunday":
+            today = "Pazar"
 
-            speak(today)
+        speak(today)
 
-        if "saat kaç" in voice:
-            selection = ["Saat şu an: ", "Hemen bakıyorum: "]
-            clock = datetime.now().strftime("%H:%M")
-            selection = random.choice(selection)
-            speak(selection + clock)
+    if "saat kaç" in voice:
+        selection = ["Saat şu an: ", "Hemen bakıyorum: "]
+        clock = datetime.now().strftime("%H:%M")
+        selection = random.choice(selection)
+        speak(selection + clock)
 
-        if "google'da ara" in voice:
-            speak("Ne aramamı istersin?")
-            search = record()
-            url = "https://www.google.com/search?q={}".format(search)
-            webbrowser.get().open(url)
-            speak("{} içi Google'da bulabildiklerimi listeliyorum.".format(search))
+    if "google'da ara" in voice:
+        speak("Ne aramamı istersin?")
+        search = record()
+        url = "https://www.google.com/search?q={}".format(search)
+        webbrowser.get().open(url)
+        speak("{} içi Google'da bulabildiklerimi listeliyorum.".format(search))
 
+    if "uygulama aç" in voice:
+        speak("Hangi uygulamayı açmamı istiyorsun?")
+        runApp = record()
+        runApp = runApp.lower()
+        if "valorant" in runApp:
+            os.startfile("D:\Riot Games\Riot Client\RiotClientServices.exe")
+            speak("İstediğin uygulamayı çalıştırıyorum.")
+        elif "life is strange" in runApp:
+            os.startfile("steam://rungameid/319630")
+            speak("İstediğin uygulamayı çalıştırıyorum.")
+        else:
+            speak("İstediğin uygulama çalıştırma listemde yok.")
 
 def speak(string):
     tts = gTTS(text=string, lang="tr", slow=False)
